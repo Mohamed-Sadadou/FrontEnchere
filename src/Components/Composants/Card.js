@@ -16,7 +16,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
 import profil from "../../Images/logo.png";
-
 const ButtonSpe = styled(Button)({
 	boxShadow: "none",
 	textTransform: "none",
@@ -43,7 +42,8 @@ export default function RecipeReviewCard(Props) {
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
 	};
-
+    var g =Props.PrixDeReserve+" DA";
+	if(Props.PrixDeReserve==0)g="Pas d'echeres"
 	return (
 		<Card
 			sx={{
@@ -59,7 +59,7 @@ export default function RecipeReviewCard(Props) {
 				component="img"
 				height="220"
 				image={Props.link}
-				alt="Paella dish"
+				alt="/static/images/a.jpg"
 			/>
 			<CardContent sx={{ marginLeft: "0px", marginTop: "-10px" }}>
 				<Typography sx={{ textAlign: "left", fontSize: 22 }}>
@@ -87,7 +87,7 @@ export default function RecipeReviewCard(Props) {
 							fontWeight: "bold",
 							fontSize: 18,
 						}}>
-						{Props.PrixDeReserve}
+						{g}
 					</Typography>
 				</div>
 			</CardActions>
@@ -97,7 +97,8 @@ export default function RecipeReviewCard(Props) {
 					variant="contained"
 					disableRipple
 					onClick={(e) => {
-						window.location.href="/Produit";
+						//console.log(Props);
+						window.location.href="/Produit/"+Props._id;
 					}}>
 					Details
 				</ButtonSpe>

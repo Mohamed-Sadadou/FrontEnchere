@@ -81,7 +81,7 @@ export default function LandingPage() {
 				</div>
 				<div className={classes.butt}>
 					<ButtonSpe onClick={()=>{
-                        window.location="/Produits";
+                        window.location="/Login";
                     }}>Encherir</ButtonSpe>
 				</div>
 			</div>

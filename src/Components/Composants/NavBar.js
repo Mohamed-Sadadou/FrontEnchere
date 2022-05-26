@@ -11,7 +11,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { Link } from "react-scroll";
 import TextField from "@mui/material/TextField";
-
+import axios from "axios";
 function getWindowDimensions() {
 	const { innerWidth: width } = window;
 	return width;
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 		width: "100%",
 	},
 	ActionLinks: {
-		marginTop:'8px',
+		marginTop: "8px",
 		display: "grid",
 		gridTemplateColumns: "repeat(3, 1fr)",
 	},
@@ -112,7 +112,24 @@ const ButtonSpe = styled(Button)({
 
 export default function MenuAppBar(props) {
 	const classes = useStyles();
+	const handleDeconnecter = async  (e) => {
+	
 
+		console.log("on go se Deconnecter");
+
+		await axios({
+			method: "get",
+			url: "http://localhost:5000/Utilisateur/Deconnection",
+			withCredentials: true,
+		}).then((res) => {
+			if (res.status == 200) {
+
+				alert("Utilisateur deconnecté avec succes !");
+				window.location.href = "/Principal";
+				
+			}
+		});
+	};
 	var color;
 
 	if (props.id === "1") color = { color: "black" };
@@ -138,23 +155,14 @@ export default function MenuAppBar(props) {
 					<div
 						className={classes.LogoBloc}
 						onClick={(e) => {
-							window.location.href = "/Principal ";
+							handleDeconnecter();
 						}}>
 						<img src={Logo1} className={classes.Logo} alt="fireSpot" />
 					</div>
 
 					<div className={classes.ActionBloc}>
 						<div className={classes.blo}>
-							{window.location.href != "http://localhost:3000/Principal" && (
-								<div>
-									<TextField
-										label=""
-										id="outlined-size-small"
-										defaultValue="Recherche"
-										size="small"
-									/>
-								</div>
-							)}
+							
 						</div>
 						<div className={classes.blo}></div>
 						<div className={classes.blo}>
@@ -176,12 +184,10 @@ export default function MenuAppBar(props) {
 											}}
 											component="div"
 											onClick={(e) => {
-												if (props.id === "1") {
-													window.location.href = "/LandingPage ";
-												}
+												window.location.href = "/Info ";
 											}}
 											align={"center"}>
-											Infos
+											
 										</Typography>
 									</div>
 								</Link>
@@ -202,9 +208,7 @@ export default function MenuAppBar(props) {
 											}}
 											component="div"
 											onClick={(e) => {
-												if (props.id === "1") {
-													window.location.href = "/LandingPage ";
-												}
+												window.location.href = "/Principal ";
 											}}
 											align={"center"}>
 											Accueil
@@ -228,9 +232,7 @@ export default function MenuAppBar(props) {
 											}}
 											component="div"
 											onClick={(e) => {
-												if (props.id === "1") {
-													window.location.href = "/LandingPage ";
-												}
+												window.location.href = "/Compte ";
 											}}
 											align={"center"}>
 											Compte
@@ -246,9 +248,9 @@ export default function MenuAppBar(props) {
 							variant="contained"
 							disableRipple
 							onClick={(e) => {
-								window.location.href = "/Journey ";
+								window.location.href = "/AjouterMaison ";
 							}}>
-							Encherir
+							Vendre
 						</ButtonSpe>
 					</div>
 				</Toolbar>

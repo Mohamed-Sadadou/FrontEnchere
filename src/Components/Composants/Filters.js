@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -6,6 +6,7 @@ import Slider from "./Slider";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
+import FiltresContext from "../FiltresContext";
 const useStyles = makeStyles((theme) => ({
 	Text: {
 		fontSize: 13,
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: "10px",
 		marginLeft: "10px",
 	},
-    Text2: {
+	Text2: {
 		fontSize: 8,
 		marginBottom: "10px",
 		marginTop: "13px",
@@ -40,30 +41,66 @@ const ButtonSpe = styled(Button)({
 	},
 });
 const label = { inputProps: { "aria-label": "Switch demo" } };
-export default function Fliters() {
+export default function Fliters(props) {
 	const classes = useStyles();
+	const [Check, setCheck] = React.useState(false);
+	const [use, setuse] = React.useState(true);
+	const [Titre, setTitre] = React.useState("");
+	const [etat, setetat] = React.useState(true);
+	var val = { use, setuse };
+	const { Filtre, setFiltre } = useContext(FiltresContext);
+
+	const handleContexte = () => {
+		var fil = Filtre;
+		fil.Encheri = !Check;
+
+		setFiltre(fil);
+		setuse(!use);
+	};
+
+	useEffect(() => {
+		
+		props.Etat.setetat2(!props.Etat.etat2);
+	}, [use]);
 	return (
-		<div style={{ width: "100%", }}>
+		<div style={{ width: "100%" }}>
 			<div>
-                <Box className={classes.Text}>Superficie</Box>
-				<Slider />
-				<div style={{ display: "flex", flexDirection: "row",marginTop:'10px' }}>
+				<Box className={classes.Text}>Superficie</Box>
+				<Slider Type="Superficie" min={50} max={2000} pas={10} Etat={val} />
+				<div
+					style={{ display: "flex", flexDirection: "row", marginTop: "10px" }}>
 					<Box className={classes.Text}> Encheri </Box>
-                    <div style={{marginLeft:'20px'}}>
-                      <Switch {...label} defaultChecked />  
-                    </div>
-					
+					<div style={{ marginLeft: "20px" }}>
+						<Switch
+							{...label}
+							defaultChecked={false}
+							onChange={(e) => {
+								if (Check) setCheck(false);
+								else setCheck(true);
+								handleContexte();
+							}}
+							value={Check}
+						/>
+					</div>
 				</div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-				<Box className={classes.Text}> Prix </Box><Box className={classes.Text2}> (300 represente 300 millions de centimes) </Box>
+				<div style={{ display: "flex", flexDirection: "row" }}>
+					<Box className={classes.Text}> Prix </Box>
+					<Box className={classes.Text2}>
+						{" "}
+						(300 represente 300 millions de centimes){" "}
+					</Box>
 				</div>
-                <Slider />
-				<Box className={classes.Text}>ID Maison</Box>
+				<Slider Type="Prix" min={300} max={5000} pas={50} Etat={val} />
+				<Box className={classes.Text}>Titre Maison</Box>
 				<TextField
 					label=""
 					id="outlined-size-small"
 					defaultValue=""
 					size="small"
+					onChange={(e) => {
+						setTitre(e.target.value);
+					}}
+					value={Titre}
 				/>
 				<div
 					style={{
@@ -77,9 +114,13 @@ export default function Fliters() {
 						variant="contained"
 						disableRipple
 						onClick={(e) => {
-							alert("clicked");
+							var fil = Filtre;
+							if (Titre === "") fil.Titre = "Titre";
+							else fil.Titre = Titre;
+							setFiltre(fil);
+							setuse(!use);
 						}}>
-						Ajouter Produit
+						Chercher Maison
 					</ButtonSpe>
 				</div>
 			</div>

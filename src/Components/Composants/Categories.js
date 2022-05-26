@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useContext, useEffect } from "react";
+import  FiltresContext  from "../FiltresContext";
 import { useState, useLayoutEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,9 +18,8 @@ function getWindowDimensions() {
 }
 
 const useStyles = makeStyles((theme) => ({
-	
 	ActionBloc: {
-        marginTop:'10px',
+		marginTop: "10px",
 		width: "100%",
 		height: "100%",
 		float: "right",
@@ -28,42 +28,58 @@ const useStyles = makeStyles((theme) => ({
 	blo: {
 		width: "100%",
 		height: "100%",
-        borderRadius:'5px',
-        marginRight:'1px',
+		borderRadius: "5px",
+		marginRight: "1px",
 		border: "1px solid #CECECE",
 	},
-    categorie:{
+	categorie: {
 		height: "100%",
-        width:'40%',
-        marginLeft:'auto',
-        marginTop:'8px',
-        marginRight:'auto',
-        color: "#002626",
+		width: "40%",
+		marginLeft: "auto",
+		marginTop: "8px",
+		marginRight: "auto",
+		color: "#002626",
 		fontSize: 18,
 		fontWeight: "bold",
-        "&:hover": { cursor: "pointer" },
-    },
-	categorie2:{
+		"&:hover": { cursor: "pointer" },
+	},
+	categorie2: {
 		height: "100%",
-        width:'65%',
-        marginLeft:'auto',
-        marginTop:'8px',
-        marginRight:'auto',
-        color: "#002626",
+		width: "65%",
+		marginLeft: "auto",
+		marginTop: "8px",
+		marginRight: "auto",
+		color: "#002626",
 		fontSize: 18,
 		fontWeight: "bold",
-        "&:hover": { cursor: "pointer" },
-    },
+		"&:hover": { cursor: "pointer" },
+	},
 }));
 
-
-export default function MenuAppBar(props) {
+export default function Categories(props) {
 	const classes = useStyles();
+	const [Categorie, setCategorie] = React.useState("");
+	
+	const { Filtre, setFiltre } = useContext(FiltresContext);
 
-	var color;
+	const handleContexte = (Categorie) => {
+		var fil = Filtre;
+	
+		fil.Categorie = Categorie;
+		
+		setFiltre(fil);
+	};
+	const Categories = [
+		"Categorie",
+		"Chalet",
+		"Villa",
+		"Appartement",
+		"Duplex",
+		"Maison",
+		"Studio",
+		"Isolée",
+	];
 
-	if (props.id === "1") color = { color: "black" };
-	else color = { color: "#002626" };
 	function useWindowSize() {
 		const [size, setSize] = useState([0, 0]);
 		useLayoutEffect(() => {
@@ -76,35 +92,38 @@ export default function MenuAppBar(props) {
 		return size;
 	}
 	useWindowSize();
+
+
+	useEffect(() => {
+   
+	
+		props.Etat.setetat(!props.Etat.etat);
+	  }, [Filtre.Categorie]);
 	return (
-		<div style={{ height: "40px",width:'100%', marginTop:'10px'}}>
-            <div style={{width:'100%', height:'1px',marginBottom:'14px', backgroundColor:'#CECECE'}}></div>
+		<div style={{ height: "40px", width: "100%", marginTop: "10px" }}>
+			<div
+				style={{
+					width: "100%",
+					height: "1px",
+					marginBottom: "14px",
+					backgroundColor: "#CECECE",
+				}}></div>
 			<div className={classes.ActionBloc}>
-				<div className={classes.blo}>
-                    <Box className={classes.categorie}> Chalais </Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie}> Maisons </Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie}> Villa </Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie2}> Appartement </Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie}>  Duplex </Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie}> Maison</Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie}>Studio</Box>
-                </div>
-                <div className={classes.blo}>
-                    <Box className={classes.categorie}>Isolée</Box>
-                </div>
-                
+				{Categories.map((Categ) => (
+					<div className={classes.blo}>
+						<Box
+							className={classes.categorie}
+							onClick={(e) => {
+								setCategorie(Categ);
+								
+								handleContexte(Categ);
+							}}
+							value={Categ}>
+							{Categ}
+						</Box>
+					</div>
+				))}
+				
 			</div>
 		</div>
 	);
